@@ -1,3 +1,4 @@
-import { sampleController } from './sample.controller';
+import { roomsController } from './rooms.controller';
+import { videoController } from './video.controller';
 
-export const controllers = [sampleController];
+export const controllers = [roomsController, videoController];
