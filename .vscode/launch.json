@@ -5,11 +5,15 @@
       "name": "Launch Index",
       "type": "node",
       "request": "launch",
-      "args": ["src/index.ts"],
+      "args": ["${workspaceFolder}/src/index.ts"],
       "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
-      "sourceMaps": true,
-      "cwd": "${workspaceRoot}",
-      "protocol": "inspector"
+      "env": {
+        "TYPEORM_DATABASE": "musicstreamdev",
+        "TYPEORM_ENTITIES": "/home/steve/code/music-stream-api/src/shared/db/models/*.ts",
+        "TOKEN_DIR": "/home/steve/code/music-stream-api/token/",
+        "TOKEN_PATH": "/home/steve/code/music-stream-api/token/token.json",
+        "YOUTUBE_API_KEY": "AIzaSyBe1g3Vk5jNqNWGz5aXI4z6d19FNiyBXTY"
+      }
     }
   ]
 }

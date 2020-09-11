@@ -6,16 +6,17 @@ import { Credentials, OAuth2Client } from 'google-auth-library';
 const OAuth2 = google.auth.OAuth2;
 const SCOPES = ['https://www.googleapis.com/auth/youtube.readonly'];
 const TOKEN_DIR = process.env.TOKEN_DIR;
-const TOKEN_PATH = process.env.TOKEN_PATH;
+const TOKEN_PATH = TOKEN_DIR + 'oauth-token.json';
+const CLIENT_SECRET = process.env.TOKEN_PATH;
 export class YouTubeService {
   public async searchYoutube(searchTerm: string) {
-    // This function should kick off the google BS behind the scenes. This should be the only public function.
     return await this.search(searchTerm);
   }
 
   private search(searchTerm: string) {
+    console.log('kicking off search');
     return new Promise((resolve, reject) => {
-      fs.readFile(TOKEN_PATH as string, async (err, content) => {
+      fs.readFile(CLIENT_SECRET as string, async (err, content) => {
         if (err) {
           reject(err);
         } else {
@@ -24,10 +25,11 @@ export class YouTubeService {
             .catch(e => reject(e));
         }
       });
-    });
+    }).catch(e => console.log(e));
   }
 
   private async authorize(credentials: any, callback: (client: OAuth2Client, term: string) => any, searchTerm: string) {
+    console.log('authorizing');
     const clientSecret = credentials.installed.client_secret;
     const clientId = credentials.installed.client_id;
     const redirectUrl = credentials.installed.redirect_uris[0];
@@ -51,6 +53,7 @@ export class YouTubeService {
     callback: (client: any, term: string) => any,
     searchTerm: string,
   ) {
+    console.log('getting new token');
     return new Promise((resolve, reject) => {
       const authUrl = oauth2Client.generateAuthUrl({
         // eslint-disable-next-line @typescript-eslint/camelcase
@@ -79,6 +82,7 @@ export class YouTubeService {
   }
 
   private storeToken(token: Credentials) {
+    console.log('storing token');
     return new Promise((resolve, reject) => {
       try {
         fs.mkdirSync(TOKEN_DIR as string);
@@ -96,6 +100,7 @@ export class YouTubeService {
   }
 
   private makeYouTubeCall(auth: OAuth2Client, searchTerm: string) {
+    console.log('making youtube call');
     return new Promise((resolve, reject) => {
       const service = google.youtube('v3');
       service.search.list(
