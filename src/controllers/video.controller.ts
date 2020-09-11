@@ -39,7 +39,7 @@ videoController.delete('/api/video/remove', async (req, res) => {
 videoController.get('/api/video/search/:query', async (req, res) => {
   console.log(req.params.query);
   await youtubeService
-    .searchYouTube(req.params.query)
+    .searchYoutube(req.params.query)
     .then(result => {
       console.log('result');
       console.log(result);
